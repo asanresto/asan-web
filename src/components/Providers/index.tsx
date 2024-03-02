@@ -6,10 +6,16 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { authExchange } from "@urql/exchange-auth";
 import { UrqlProvider, cacheExchange, createClient, fetchExchange, ssrExchange } from "@urql/next";
+import { subscriptionExchange } from "urql";
 import { SnackbarProvider } from "notistack";
 import { ReactNode, useMemo, useRef } from "react";
 import { Provider } from "react-redux";
 import Notifier from "../Notifier";
+import { createClient as createWSClient } from "graphql-ws";
+
+const wsClient = createWSClient({
+  url: "ws://localhost:8080/query",
+});
 
 const Providers = ({ children }: { children: ReactNode }) => {
   // console.log("Providers");
@@ -18,7 +24,7 @@ const Providers = ({ children }: { children: ReactNode }) => {
   const [client, ssr] = useMemo(() => {
     const ssr = ssrExchange();
     const client = createClient({
-      url: "http://localhost:3001/api/graphql",
+      url: "http://localhost:8080",
       exchanges: [
         cacheExchange,
         authExchange(async (utilities) => {
@@ -95,6 +101,15 @@ const Providers = ({ children }: { children: ReactNode }) => {
         }),
         ssr,
         fetchExchange,
+        subscriptionExchange({
+          forwardSubscription: (request) => {
+            return {
+              subscribe: (observer) => {
+                return { unsubscribe: wsClient.subscribe({ ...request, query: request.query || "" }, observer) };
+              },
+            };
+          },
+        }),
       ],
       suspense: true,
     });
