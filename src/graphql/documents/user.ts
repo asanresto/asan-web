@@ -29,8 +29,8 @@ export const loginDoc = gql(`
 `);
 
 export const logoutDoc = gql`
-  mutation Logout {
-    logout
+  mutation Logout($refreshToken: String!) {
+    logOut(refreshToken: $refreshToken)
   }
 `;
 
