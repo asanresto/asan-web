@@ -1,8 +1,7 @@
-"use client";
-
 import { Stack, Box, alpha } from "@mui/material";
+import { memo } from "react";
 
-const ChatBubble = ({ variant }: { variant: "in" | "out" }) => {
+const ChatBubble = memo(function ChatBubble({ variant }: { variant: "in" | "out" }) {
   const alignSelf = variant === "in" ? "flex-start" : "flex-end";
   const bgcolor = variant === "in" ? "#E8DDD9" : "#4B3425";
 
@@ -30,6 +29,6 @@ const ChatBubble = ({ variant }: { variant: "in" | "out" }) => {
       />
     </Stack>
   );
-};
+});
 
 export default ChatBubble;

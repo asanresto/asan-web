@@ -25,6 +25,7 @@
     "@next/bundle-analyzer": "14.1.1",
     "@reduxjs/toolkit": "2.2.1",
     "@tanstack/react-table": "8.13.2",
+    "@types/react-window": "1.8.8",
     "@urql/exchange-auth": "2.1.6",
     "@urql/exchange-retry": "1.2.1",
     "@urql/next": "1.1.1",

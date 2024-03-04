@@ -1,9 +1,13 @@
 import { getMe } from "@/actions/user";
-import { Dashboard } from "@/assets";
-import ChatBubble from "@/components/ChatBubble";
+import { ArrowCurveBottomLeft, Dashboard } from "@/assets";
+
 import { Avatar, Box, Button, InputBase, Stack } from "@mui/material";
+import dynamic from "next/dynamic";
 import { Urbanist } from "next/font/google";
 import NextLink from "next/link";
+import { Suspense } from "react";
+
+const ChatThread = dynamic(() => import("@/components/ChatThread"), { ssr: false });
 
 const urbanist = Urbanist({
   weight: ["300", "400", "500", "600", "700", "800"],
@@ -16,10 +20,12 @@ const CustomerSupportPage = async () => {
 
   return (
     <Box fontFamily={urbanist.style.fontFamily} display="flex" alignItems="stretch" height="100vh" minHeight="1028px">
-      <Sidebar></Sidebar>
+      <Suspense>
+        <Sidebar />
+      </Suspense>
       <Folders></Folders>
       <Contacts></Contacts>
-      <Thread></Thread>
+      <ThreadContainer></ThreadContainer>
     </Box>
   );
 };
@@ -108,7 +114,7 @@ const ContactItem = ({ isActive }: { isActive?: boolean }) => {
   );
 };
 
-const Thread = () => {
+const ThreadContainer = () => {
   return (
     <Box bgcolor="white" flex={1} display="flex" flexDirection="column">
       <Stack direction="row" alignItems="center" width="100%" p={3}>
@@ -126,13 +132,17 @@ const Thread = () => {
       </Stack>
       <Box height="1px" bgcolor="#D5C2B9" />
       <Stack flex={1} p={3} justifyItems="flex-start">
-        <ChatBubble variant="out" />
-        <ChatBubble variant="in" />
+        <ChatThread />
       </Stack>
       <Box p={3}>
         <Stack direction="row" p={3} borderRadius="32px" width="100%" bgcolor="#F7F4F2" alignItems="center">
-          <InputBase sx={{ flex: 1 }} />
-          <Button sx={{ bgcolor: "#9BB068", width: "64px", height: "64px", borderRadius: "32px" }}></Button>
+          <InputBase
+            sx={{ flex: 1, fontSize: "16px", fontWeight: 600, color: "#4B3425" }}
+            placeholder="Type your message here"
+          />
+          <Button sx={{ bgcolor: "#9BB068", width: "64px", height: "64px", borderRadius: "32px" }}>
+            <ArrowCurveBottomLeft width="32px" height="32px" />
+          </Button>
         </Stack>
       </Box>
     </Box>
