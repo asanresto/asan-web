@@ -1,7 +1,8 @@
 "use client";
 
 import { logoutDoc } from "@/graphql/documents/user";
-import { LogoutMutation, MutationLogoutArgs } from "@/graphql/types";
+import { LogoutMutation, LogoutMutationVariables } from "@/graphql/types";
+import { getCookie } from "@/utils/cookie";
 import { IconButton, IconButtonProps, Menu, MenuItem, Typography } from "@mui/material";
 import { useMutation } from "@urql/next";
 import { useRouter } from "next/navigation";
@@ -12,7 +13,7 @@ const settings = ["Account", "Logout"];
 const LoggedInUser = forwardRef<any, IconButtonProps>(function LoggedInUser({ children, ...props }, ref) {
   const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
   const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
-  const [logoutResult, logout] = useMutation<LogoutMutation, MutationLogoutArgs>(logoutDoc);
+  const [logoutResult, logout] = useMutation<LogoutMutation, LogoutMutationVariables>(logoutDoc);
   const router = useRouter();
 
   return (
@@ -51,7 +52,10 @@ const LoggedInUser = forwardRef<any, IconButtonProps>(function LoggedInUser({ ch
             onClick={async () => {
               setAnchorElUser(null);
               if (setting === "Logout") {
-                await logout({});
+                const refreshToken = getCookie(process.env.NEXT_PUBLIC_REFRESH_TOKEN_KEY);
+                if (refreshToken) {
+                  await logout({ refreshToken: refreshToken });
+                }
                 router.replace("/login");
                 return;
               }

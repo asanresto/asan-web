@@ -5,10 +5,8 @@ import AppBar from "@mui/material/AppBar";
 import Avatar from "@mui/material/Avatar";
 import Badge from "@mui/material/Badge";
 import Box from "@mui/material/Box";
-import Breadcrumbs from "@mui/material/Breadcrumbs";
 import Collapse from "@mui/material/Collapse";
 import IconButton from "@mui/material/IconButton";
-import Link from "@mui/material/Link";
 import List from "@mui/material/List";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
@@ -17,7 +15,6 @@ import ListSubheader from "@mui/material/ListSubheader";
 import Stack from "@mui/material/Stack";
 import Toolbar from "@mui/material/Toolbar";
 import Tooltip from "@mui/material/Tooltip";
-import Typography from "@mui/material/Typography";
 import NextLink from "next/link";
 import { ReactNode } from "react";
 
@@ -53,7 +50,7 @@ const MainLayout = async ({ children }: { children: ReactNode }) => {
   //     },
   //   },
   // );
-  // const data = await getMe();
+  const data = await getMe();
 
   return (
     <Box minHeight="900px" height="100vh" display="flex" flexDirection="column">
@@ -79,35 +76,13 @@ const MainLayout = async ({ children }: { children: ReactNode }) => {
                 <Box width={24} height={24} />
               </Badge>
             </IconButton>
-            {/* {data.data?.me && (
+            {data.data?.me && (
               <Tooltip title="Open settings">
                 <LoggedInUser>
                   <Avatar alt={data.data.me.name ?? ""} src={data.data?.me?.avatar} />
                 </LoggedInUser>
               </Tooltip>
-            )} */}
-            {/*<Menu
-              sx={{ mt: '45px' }}
-              id="menu-appbar"
-              anchorEl={anchorElUser}
-              anchorOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-              }}
-              open={Boolean(anchorElUser)}
-              onClose={handleCloseUserMenu}
-            >
-              {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                  <Typography textAlign="center">{setting}</Typography>
-                </MenuItem>
-              ))}
-            </Menu> */}
+            )}
           </Stack>
         </Toolbar>
       </AppBar>
