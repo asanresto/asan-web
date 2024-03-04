@@ -37,10 +37,13 @@ export type Mutation = {
   __typename?: 'Mutation';
   createOrder: Order;
   createProduct: Product;
+  forgotPassword: Scalars['Boolean']['output'];
   logOut: Scalars['Boolean']['output'];
   login: AuthResponse;
   refreshToken: AuthResponse;
+  resetPassword: Scalars['Boolean']['output'];
   signUp: AuthResponse;
+  updateAccount: Scalars['Boolean']['output'];
 };
 
 
@@ -120,6 +123,7 @@ export type Product = {
 
 export type Query = {
   __typename?: 'Query';
+  me?: Maybe<User>;
   products: Array<Product>;
   users: Array<User>;
 };
@@ -142,6 +146,28 @@ export type SubscriptionChatArgs = {
 
 export type User = {
   __typename?: 'User';
+  avatarUrl?: Maybe<Scalars['String']['output']>;
+  email: Scalars['String']['output'];
   id: Scalars['ID']['output'];
-  name: Scalars['String']['output'];
+  name?: Maybe<Scalars['String']['output']>;
 };
+
+export type MeQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type MeQuery = { __typename?: 'Query', me?: { __typename?: 'User', id: string, name?: string | null } | null };
+
+export type LoginMutationVariables = Exact<{
+  email: Scalars['String']['input'];
+  password: Scalars['String']['input'];
+}>;
+
+
+export type LoginMutation = { __typename?: 'Mutation', login: { __typename?: 'AuthResponse', accessToken: string, refreshToken: string, accessTokenTtl: number, refreshTokenTtl: number } };
+
+export type LogoutMutationVariables = Exact<{
+  refreshToken: Scalars['String']['input'];
+}>;
+
+
+export type LogoutMutation = { __typename?: 'Mutation', logOut: boolean };

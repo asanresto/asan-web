@@ -24,7 +24,7 @@ const Providers = ({ children }: { children: ReactNode }) => {
   const [client, ssr] = useMemo(() => {
     const ssr = ssrExchange();
     const client = createClient({
-      url: "http://localhost:8080",
+      url: "http://localhost:8080/query",
       exchanges: [
         cacheExchange,
         authExchange(async (utilities) => {

@@ -24,17 +24,17 @@ const LoginForm = () => {
   const router = useRouter();
   const { enqueueSnackbar } = useSnackbar();
 
-  const errors: ZodIssue[] = JSON.parse(
-    (loginResult.error?.graphQLErrors?.[0].extensions as any)?.originalError?.message ?? null,
-  );
+  // const errors: ZodIssue[] = JSON.parse(
+  //   (loginResult.error?.graphQLErrors?.[0].extensions as any)?.originalError?.message ?? null,
+  // );
 
-  useEffect(() => {
-    if (errors) {
-      errors.forEach((item) => {
-        setError(item.path[0] as any, { message: item.message });
-      });
-    }
-  }, [errors, setError]);
+  // useEffect(() => {
+  //   if (errors) {
+  //     errors.forEach((item) => {
+  //       setError(item.path[0] as any, { message: item.message });
+  //     });
+  //   }
+  // }, [errors, setError]);
 
   return (
     <FormProvider {...methods}>

@@ -48,18 +48,33 @@ async function appMiddleware(request: NextRequest) {
       return NextResponse.redirect(new URL("login", process.env.NEXT_PUBLIC_BASE_URL).href);
     }
     // Refresh token
-    // Had to use a route handler because some functions don't work on edge runtime
     try {
-      const url = new URL("api/refresh-token", process.env.NEXT_PUBLIC_BASE_URL);
-      url.searchParams.append("refreshToken", request.cookies.get(process.env.NEXT_PUBLIC_REFRESH_TOKEN_KEY)!.value);
-      const res = await fetch(url.href);
-      if (!res.ok) {
+      const res = await fetch(new URL("query", process.env.NEXT_PUBLIC_API_URL), {
+        next: { revalidate: 0 },
+        headers: {
+          "Content-Type": "application/json",
+        },
+        method: "POST",
+        body: JSON.stringify({
+          query: `
+            mutation {
+              refreshToken(refreshToken: "${request.cookies.get(process.env.NEXT_PUBLIC_REFRESH_TOKEN_KEY)!.value}") {
+                accessToken
+                accessTokenTtl
+                refreshToken
+                refreshTokenTtl
+              }
+            }
+          `,
+        }),
+      });
+      const data = await res.json();
+      if (!data.data?.refreshToken) {
         return NextResponse.redirect(new URL("logout", process.env.NEXT_PUBLIC_BASE_URL).href);
       }
-      const data = await res.json();
       const authUrl = new URL("authenticate", process.env.NEXT_PUBLIC_BASE_URL);
-      authUrl.searchParams.append("accessToken", data.accessToken);
-      authUrl.searchParams.append("refreshToken", data.refreshToken);
+      authUrl.searchParams.append("accessToken", data.data.refreshToken.accessToken);
+      authUrl.searchParams.append("refreshToken", data.data.refreshToken.refreshToken);
       authUrl.searchParams.append("callbackUrl", request.nextUrl.href);
       return NextResponse.redirect(authUrl.href);
     } catch (error) {

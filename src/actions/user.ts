@@ -4,7 +4,7 @@ import { cookies, headers } from "next/headers";
 import { redirect } from "next/navigation";
 
 export const getMe = async () => {
-  const res = await fetch(new URL("api/graphql", process.env.NEXT_PUBLIC_BASE_URL), {
+  const res = await fetch(new URL("query", process.env.NEXT_PUBLIC_API_URL), {
     next: { tags: ["me"], revalidate: 60 },
     headers: {
       Authorization: `Bearer ${cookies().get(process.env.NEXT_PUBLIC_ACCESS_TOKEN_KEY)?.value}`,
@@ -15,8 +15,8 @@ export const getMe = async () => {
       query: `
         {
           me {
-            avatar
-            email
+            // avatar
+            // email
             id
             name
           }

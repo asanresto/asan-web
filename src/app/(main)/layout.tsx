@@ -53,7 +53,7 @@ const MainLayout = async ({ children }: { children: ReactNode }) => {
   //     },
   //   },
   // );
-  const data = await getMe();
+  // const data = await getMe();
 
   return (
     <Box minHeight="900px" height="100vh" display="flex" flexDirection="column">
@@ -79,13 +79,13 @@ const MainLayout = async ({ children }: { children: ReactNode }) => {
                 <Box width={24} height={24} />
               </Badge>
             </IconButton>
-            {data.data?.me && (
+            {/* {data.data?.me && (
               <Tooltip title="Open settings">
                 <LoggedInUser>
                   <Avatar alt={data.data.me.name ?? ""} src={data.data?.me?.avatar} />
                 </LoggedInUser>
               </Tooltip>
-            )}
+            )} */}
             {/*<Menu
               sx={{ mt: '45px' }}
               id="menu-appbar"
