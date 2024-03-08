@@ -1,13 +1,15 @@
 import { getMe } from "@/actions/user";
 import { ArrowCurveBottomLeft, Dashboard } from "@/assets";
+import Chat from "@/components/Chat";
 
-import { Avatar, Box, Button, InputBase, Stack } from "@mui/material";
+import ChatInput from "@/components/ChatInput";
+import { Avatar, Box, Button, Stack } from "@mui/material";
 import dynamic from "next/dynamic";
 import { Urbanist } from "next/font/google";
 import NextLink from "next/link";
 import { Suspense } from "react";
 
-const ChatThread = dynamic(() => import("@/components/ChatThread"), { ssr: false });
+const ChatThread = dynamic(() => import("@/components/Chat/MessageContainer"), { ssr: false });
 
 const urbanist = Urbanist({
   weight: ["300", "400", "500", "600", "700", "800"],
@@ -131,20 +133,7 @@ const ThreadContainer = () => {
         </Stack>
       </Stack>
       <Box height="1px" bgcolor="#D5C2B9" />
-      <Stack flex={1} p={3} justifyItems="flex-start">
-        <ChatThread />
-      </Stack>
-      <Box p={3}>
-        <Stack direction="row" p={3} borderRadius="32px" width="100%" bgcolor="#F7F4F2" alignItems="center">
-          <InputBase
-            sx={{ flex: 1, fontSize: "16px", fontWeight: 600, color: "#4B3425" }}
-            placeholder="Type your message here"
-          />
-          <Button sx={{ bgcolor: "#9BB068", width: "64px", height: "64px", borderRadius: "32px" }}>
-            <ArrowCurveBottomLeft width="32px" height="32px" />
-          </Button>
-        </Stack>
-      </Box>
+      <Chat />
     </Box>
   );
 };
