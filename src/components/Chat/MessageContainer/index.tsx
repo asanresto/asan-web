@@ -1,9 +1,9 @@
 "use client";
 
-import { forwardRef, useEffect, useRef, useState } from "react";
-import { VList, VListHandle } from "virtua";
-import ChatBubble from "../../ChatBubble";
 import { Box } from "@mui/material";
+import { forwardRef, useEffect, useRef } from "react";
+import { VList, VListHandle } from "virtua";
+import ChatBubble from "../ChatBubble";
 
 type Message = {
   content: string;
@@ -42,7 +42,6 @@ const MessageContainer = forwardRef<
         }
       }}
     >
-      <Box textAlign="center">loading</Box>
       {initialData.map((item, index) => {
         const isEven = index % 2 === 0;
         return <ChatBubble key={index} variant={isEven ? "in" : "out"} content={item.content} />;

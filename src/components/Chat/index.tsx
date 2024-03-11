@@ -3,23 +3,29 @@
 import { ArrowCurveBottomLeft } from "@/assets";
 import { Box, Button, Stack } from "@mui/material";
 import { useRef, useState } from "react";
-import ChatInput from "../ChatInput";
+import ChatInput from "./ChatInput";
 import MessageContainer from "./MessageContainer";
 import { VListHandle } from "virtua";
+import { useMutation, useSubscription } from "urql";
+import { ChatSubscriptionVariables, CreateChatRoomMutation, CreateChatRoomMutationVariables } from "@/graphql/types";
+import { chatDoc, createChatRoomDoc } from "@/graphql/documents/chat";
+import { useSearchParams } from "next/navigation";
 
 const Chat = () => {
+  // const [res] = useSubscription<any, any[], ChatSubscriptionVariables>(
+  //   { query: chatDoc, variables: { roomId: "1" } },
+  //   (previous = [], data) => {
+  //     return [data.chat, ...previous];
+  //   },
+  // );
   const messageContainerRef = useRef<VListHandle | null>(null);
-  const [data, setData] = useState<{ content: string }[]>(
-    Array(20)
-      .fill(undefined)
-      .map((_, index) => {
-        return {
-          content: String(index),
-          // faker.lorem.sentences()
-        };
-      }),
-  );
+  const [data, setData] = useState<{ content: string }[]>([]);
   const [message, setMessage] = useState("");
+  const searchParams = useSearchParams();
+  const userId = searchParams.get("userId");
+  const [createChatRoomResult, createChatRoom] = useMutation<CreateChatRoomMutation, CreateChatRoomMutationVariables>(
+    createChatRoomDoc,
+  );
 
   return (
     <>
@@ -62,7 +68,10 @@ const Chat = () => {
           <Button
             sx={{ bgcolor: "#9BB068", width: "64px", height: "64px", borderRadius: "32px" }}
             disabled={!message}
-            onClick={() => {
+            onClick={async () => {
+              if (!data.length) {
+                await createChatRoom({ userIds: [] });
+              }
               setData((prevData) => {
                 return [...prevData, { content: message }];
               });

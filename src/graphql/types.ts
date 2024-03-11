@@ -22,6 +22,11 @@ export type AuthResponse = {
   refreshTokenTtl: Scalars['Int']['output'];
 };
 
+export type ChatRoom = {
+  __typename?: 'ChatRoom';
+  id: Scalars['ID']['output'];
+};
+
 export type LoginPayload = {
   email: Scalars['String']['input'];
   password: Scalars['String']['input'];
@@ -35,6 +40,7 @@ export type Message = {
 
 export type Mutation = {
   __typename?: 'Mutation';
+  createChatRoom: Scalars['Boolean']['output'];
   createOrder: Order;
   createProduct: Product;
   forgotPassword: Scalars['Boolean']['output'];
@@ -42,8 +48,14 @@ export type Mutation = {
   login: AuthResponse;
   refreshToken: AuthResponse;
   resetPassword: Scalars['Boolean']['output'];
-  signUp: AuthResponse;
+  sendMessage: Scalars['Boolean']['output'];
+  signUp: Scalars['Boolean']['output'];
   updateAccount: Scalars['Boolean']['output'];
+};
+
+
+export type MutationCreateChatRoomArgs = {
+  userIds: Array<Scalars['String']['input']>;
 };
 
 
@@ -54,6 +66,11 @@ export type MutationCreateOrderArgs = {
 
 export type MutationCreateProductArgs = {
   input: NewProduct;
+};
+
+
+export type MutationForgotPasswordArgs = {
+  email: Scalars['String']['input'];
 };
 
 
@@ -70,6 +87,19 @@ export type MutationLoginArgs = {
 
 export type MutationRefreshTokenArgs = {
   refreshToken: Scalars['String']['input'];
+};
+
+
+export type MutationResetPasswordArgs = {
+  confirmPassword: Scalars['String']['input'];
+  newPassword: Scalars['String']['input'];
+  resetPasswordToken: Scalars['String']['input'];
+};
+
+
+export type MutationSendMessageArgs = {
+  message: Scalars['String']['input'];
+  roomId: Scalars['String']['input'];
 };
 
 
@@ -123,9 +153,16 @@ export type Product = {
 
 export type Query = {
   __typename?: 'Query';
+  chatRooms: Array<ChatRoom>;
   me?: Maybe<User>;
+  messages: Array<Message>;
   products: Array<Product>;
   users: Array<User>;
+};
+
+
+export type QueryMessagesArgs = {
+  roomId: Scalars['String']['input'];
 };
 
 export type SignUpPayload = {
@@ -151,6 +188,20 @@ export type User = {
   id: Scalars['ID']['output'];
   name?: Maybe<Scalars['String']['output']>;
 };
+
+export type ChatSubscriptionVariables = Exact<{
+  roomId: Scalars['String']['input'];
+}>;
+
+
+export type ChatSubscription = { __typename?: 'Subscription', chat: { __typename?: 'Message', id: string, content: string } };
+
+export type CreateChatRoomMutationVariables = Exact<{
+  userIds: Array<Scalars['String']['input']> | Scalars['String']['input'];
+}>;
+
+
+export type CreateChatRoomMutation = { __typename?: 'Mutation', createChatRoom: boolean };
 
 export type MeQueryVariables = Exact<{ [key: string]: never; }>;
 

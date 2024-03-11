@@ -1,8 +1,7 @@
 import { getMe } from "@/actions/user";
-import { ArrowCurveBottomLeft, Dashboard } from "@/assets";
+import { ChatDouble, Dashboard } from "@/assets";
 import Chat from "@/components/Chat";
 
-import ChatInput from "@/components/ChatInput";
 import { Avatar, Box, Button, Stack } from "@mui/material";
 import dynamic from "next/dynamic";
 import { Urbanist } from "next/font/google";
@@ -17,7 +16,13 @@ const urbanist = Urbanist({
   display: "swap",
 });
 
-const CustomerSupportPage = async () => {
+const CustomerSupportPage = async ({
+  params,
+  searchParams,
+}: {
+  params: Record<string, string>;
+  searchParams: { userId: string };
+}) => {
   await getMe();
 
   return (
@@ -26,7 +31,7 @@ const CustomerSupportPage = async () => {
         <Sidebar />
       </Suspense>
       <Folders></Folders>
-      <Contacts></Contacts>
+      <Contacts currentUserId={searchParams.userId} />
       <ThreadContainer></ThreadContainer>
     </Box>
   );
@@ -64,22 +69,42 @@ const Folders = () => {
   return <Box bgcolor="#E8DDD9" width="235px" borderRight="1px solid #D5C2B9"></Box>;
 };
 
-const Contacts = () => {
+const Contacts = ({ currentUserId }: { currentUserId: string }) => {
   return (
     <Box bgcolor="#F7F4F2" width="330px">
+      <Box
+        display="flex"
+        alignItems="center"
+        width="100%"
+        px={2}
+        py={5}
+        fontSize="30px"
+        fontWeight={700}
+        lineHeight={1}
+        letterSpacing="-0.02em"
+      >
+        <ChatDouble style={{ width: "32px", height: "32px" }} />
+        <Box color="#4B3425" ml="16px">
+          Rooms
+        </Box>
+        <Box color="#926247" ml="auto">
+          24
+        </Box>
+      </Box>
       <Stack divider={<Box height="1px" bgcolor="#E8DDD9" />}>
-        <ContactItem isActive />
-        <ContactItem />
-        <ContactItem />
-        <ContactItem />
+        {["1", "2", "3"].map((item, index) => {
+          return <ContactItem key={index} userId={item} isActive={item === currentUserId}></ContactItem>;
+        })}
       </Stack>
     </Box>
   );
 };
 
-const ContactItem = ({ isActive }: { isActive?: boolean }) => {
+const ContactItem = ({ userId, isActive }: { userId: string; isActive?: boolean }) => {
   return (
     <Button
+      LinkComponent={NextLink}
+      href={`/customer-support?userId=${userId}`}
       sx={{
         fontFamily: urbanist.style.fontFamily,
         bgcolor: isActive ? "#E5EAD7" : "transparent",
@@ -87,6 +112,7 @@ const ContactItem = ({ isActive }: { isActive?: boolean }) => {
         justifyContent: "flex-start",
         textTransform: "none",
         position: "relative",
+        borderRadius: 0,
       }}
     >
       <Stack width="100%" direction="row" alignItems="center" spacing={2}>
