@@ -1,7 +1,6 @@
 import { getMe } from "@/actions/user";
 import { ChatDouble, Dashboard, Search } from "@/assets";
 import Chat from "@/components/Chat";
-
 import { Avatar, Box, Button, Stack } from "@mui/material";
 import dynamic from "next/dynamic";
 import { Urbanist } from "next/font/google";

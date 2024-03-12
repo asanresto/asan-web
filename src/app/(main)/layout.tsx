@@ -35,7 +35,7 @@ const employeeItems = [{ href: "/employees", label: "Employees" }];
 
 const customerItems = [
   { href: "/customers", label: "Customers" },
-  { href: "/customer-support", label: "Support" },
+  { href: "/alo", label: "Support" },
 ];
 
 const MainLayout = async ({ children }: { children: ReactNode }) => {

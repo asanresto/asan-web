@@ -13,7 +13,7 @@ import {
 import { getCookie } from "@/utils/cookie";
 import { Box, Button, Stack } from "@mui/material";
 import { useSearchParams } from "next/navigation";
-import { useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useMutation, useSubscription } from "urql";
 import { VListHandle } from "virtua";
 import ChatInput from "./ChatInput";
@@ -42,11 +42,11 @@ const Chat = () => {
       }, []),
     },
     (previous, data: MessageSubscription) => {
-      if (data) {
-        setData((previous) => {
-          return [...previous, { content: data.message?.content }];
-        });
-      }
+      // if (data) {
+      //   setData((previous) => {
+      //     return [...previous, { content: data.message?.content }];
+      //   });
+      // }
       return;
     },
   );
