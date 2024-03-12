@@ -1,8 +1,8 @@
 import { gql } from "urql";
 
-export const chatDoc = gql`
-  subscription Chat($roomId: String!) {
-    chat(roomId: $roomId) {
+export const messageDoc = gql`
+  subscription Message {
+    message {
       id
       content
     }
@@ -12,5 +12,11 @@ export const chatDoc = gql`
 export const createChatRoomDoc = gql`
   mutation CreateChatRoom($userIds: [String!]!) {
     createChatRoom(userIds: $userIds)
+  }
+`;
+
+export const sendMessageDoc = gql`
+  mutation SendMessage($roomId: String!, $message: String!) {
+    sendMessage(message: $message, roomId: $roomId)
   }
 `;

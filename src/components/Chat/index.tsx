@@ -1,23 +1,25 @@
 "use client";
 
 import { ArrowCurveBottomLeft } from "@/assets";
+import { createChatRoomDoc, messageDoc, sendMessageDoc } from "@/graphql/documents/chat";
+import {
+  CreateChatRoomMutation,
+  CreateChatRoomMutationVariables,
+  MessageSubscription,
+  MessageSubscriptionVariables,
+  SendMessageMutation,
+  SendMessageMutationVariables,
+} from "@/graphql/types";
+import { getCookie } from "@/utils/cookie";
 import { Box, Button, Stack } from "@mui/material";
-import { useRef, useState } from "react";
+import { useSearchParams } from "next/navigation";
+import { useMemo, useRef, useState } from "react";
+import { useMutation, useSubscription } from "urql";
+import { VListHandle } from "virtua";
 import ChatInput from "./ChatInput";
 import MessageContainer from "./MessageContainer";
-import { VListHandle } from "virtua";
-import { useMutation, useSubscription } from "urql";
-import { ChatSubscriptionVariables, CreateChatRoomMutation, CreateChatRoomMutationVariables } from "@/graphql/types";
-import { chatDoc, createChatRoomDoc } from "@/graphql/documents/chat";
-import { useSearchParams } from "next/navigation";
 
 const Chat = () => {
-  // const [res] = useSubscription<any, any[], ChatSubscriptionVariables>(
-  //   { query: chatDoc, variables: { roomId: "1" } },
-  //   (previous = [], data) => {
-  //     return [data.chat, ...previous];
-  //   },
-  // );
   const messageContainerRef = useRef<VListHandle | null>(null);
   const [data, setData] = useState<{ content: string }[]>([]);
   const [message, setMessage] = useState("");
@@ -26,6 +28,37 @@ const Chat = () => {
   const [createChatRoomResult, createChatRoom] = useMutation<CreateChatRoomMutation, CreateChatRoomMutationVariables>(
     createChatRoomDoc,
   );
+  const [sendMessageResult, sendMessage] = useMutation<SendMessageMutation, SendMessageMutationVariables>(
+    sendMessageDoc,
+  );
+
+  const [res] = useSubscription<MessageSubscription, any, MessageSubscriptionVariables>(
+    {
+      query: messageDoc,
+      context: useMemo(() => {
+        return {
+          fetchOptions: { headers: { Authorization: `Bearer ${getCookie(process.env.NEXT_PUBLIC_ACCESS_TOKEN_KEY)}` } },
+        };
+      }, []),
+    },
+    (previous, data: MessageSubscription) => {
+      if (data) {
+        setData((previous) => {
+          return [...previous, { content: data.message?.content }];
+        });
+      }
+      return;
+    },
+  );
+
+  // useEffect(() => {
+  //   startSubscription({
+  //     suspense: true,
+  //     // fetchOptions: {
+  //     //   headers: { Authorization: `Bearer ${getCookie(process.env.NEXT_PUBLIC_ACCESS_TOKEN_KEY)}` },
+  //     // },
+  //   });
+  // }, []);
 
   return (
     <>
@@ -69,12 +102,13 @@ const Chat = () => {
             sx={{ bgcolor: "#9BB068", width: "64px", height: "64px", borderRadius: "32px" }}
             disabled={!message}
             onClick={async () => {
-              if (!data.length) {
-                await createChatRoom({ userIds: [] });
-              }
-              setData((prevData) => {
-                return [...prevData, { content: message }];
-              });
+              // if (!data.length) {
+              //   await createChatRoom({ userIds: [] });
+              // }
+              // setData((prevData) => {
+              //   return [...prevData, { content: message }];
+              // });
+              await sendMessage({ message: message, roomId: "1" });
               setMessage("");
               messageContainerRef.current?.scrollToIndex(data.length);
             }}

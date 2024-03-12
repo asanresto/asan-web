@@ -15,6 +15,9 @@ import { createClient as createWSClient } from "graphql-ws";
 
 const wsClient = createWSClient({
   url: "ws://localhost:8080/query",
+  connectionParams: {
+    Authorization: `Bearer ${getCookie(process.env.NEXT_PUBLIC_ACCESS_TOKEN_KEY)}`,
+  },
 });
 
 const Providers = ({ children }: { children: ReactNode }) => {
@@ -102,7 +105,7 @@ const Providers = ({ children }: { children: ReactNode }) => {
         ssr,
         fetchExchange,
         subscriptionExchange({
-          forwardSubscription: (request) => {
+          forwardSubscription: (request, operation) => {
             return {
               subscribe: (observer) => {
                 return { unsubscribe: wsClient.subscribe({ ...request, query: request.query || "" }, observer) };

@@ -1,5 +1,5 @@
 import { getMe } from "@/actions/user";
-import { ChatDouble, Dashboard } from "@/assets";
+import { ChatDouble, Dashboard, Search } from "@/assets";
 import Chat from "@/components/Chat";
 
 import { Avatar, Box, Button, Stack } from "@mui/material";
@@ -154,7 +154,9 @@ const ThreadContainer = () => {
           <Tag />
         </Stack>
         <Stack direction="row" spacing={1}>
-          <Button sx={{ bgcolor: "#F7F4F2", width: "64px", height: "64px", borderRadius: "32px" }}></Button>
+          <Button sx={{ bgcolor: "#F7F4F2", width: "64px", height: "64px", borderRadius: "32px" }}>
+            <Search style={{ width: "32px", height: "32px" }} />
+          </Button>
           <Button sx={{ bgcolor: "#F7F4F2", width: "64px", height: "64px", borderRadius: "32px" }}></Button>
         </Stack>
       </Stack>

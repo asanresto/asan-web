@@ -173,12 +173,7 @@ export type SignUpPayload = {
 
 export type Subscription = {
   __typename?: 'Subscription';
-  chat: Message;
-};
-
-
-export type SubscriptionChatArgs = {
-  roomId: Scalars['String']['input'];
+  message: Message;
 };
 
 export type User = {
@@ -189,12 +184,10 @@ export type User = {
   name?: Maybe<Scalars['String']['output']>;
 };
 
-export type ChatSubscriptionVariables = Exact<{
-  roomId: Scalars['String']['input'];
-}>;
+export type MessageSubscriptionVariables = Exact<{ [key: string]: never; }>;
 
 
-export type ChatSubscription = { __typename?: 'Subscription', chat: { __typename?: 'Message', id: string, content: string } };
+export type MessageSubscription = { __typename?: 'Subscription', message: { __typename?: 'Message', id: string, content: string } };
 
 export type CreateChatRoomMutationVariables = Exact<{
   userIds: Array<Scalars['String']['input']> | Scalars['String']['input'];
@@ -202,6 +195,14 @@ export type CreateChatRoomMutationVariables = Exact<{
 
 
 export type CreateChatRoomMutation = { __typename?: 'Mutation', createChatRoom: boolean };
+
+export type SendMessageMutationVariables = Exact<{
+  roomId: Scalars['String']['input'];
+  message: Scalars['String']['input'];
+}>;
+
+
+export type SendMessageMutation = { __typename?: 'Mutation', sendMessage: boolean };
 
 export type MeQueryVariables = Exact<{ [key: string]: never; }>;
 
