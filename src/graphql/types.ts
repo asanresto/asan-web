@@ -48,7 +48,7 @@ export type Mutation = {
   login: AuthResponse;
   refreshToken: AuthResponse;
   resetPassword: Scalars['Boolean']['output'];
-  sendMessage: Scalars['Boolean']['output'];
+  sendChatMessage: Scalars['Boolean']['output'];
   signUp: Scalars['Boolean']['output'];
   updateAccount: Scalars['Boolean']['output'];
 };
@@ -97,7 +97,7 @@ export type MutationResetPasswordArgs = {
 };
 
 
-export type MutationSendMessageArgs = {
+export type MutationSendChatMessageArgs = {
   message: Scalars['String']['input'];
   roomId: Scalars['String']['input'];
 };
@@ -202,7 +202,7 @@ export type SendMessageMutationVariables = Exact<{
 }>;
 
 
-export type SendMessageMutation = { __typename?: 'Mutation', sendMessage: boolean };
+export type SendMessageMutation = { __typename?: 'Mutation', sendChatMessage: boolean };
 
 export type MeQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -223,3 +223,10 @@ export type LogoutMutationVariables = Exact<{
 
 
 export type LogoutMutation = { __typename?: 'Mutation', logOut: boolean };
+
+export type RefreshTokenMutationVariables = Exact<{
+  refreshToken: Scalars['String']['input'];
+}>;
+
+
+export type RefreshTokenMutation = { __typename?: 'Mutation', refreshToken: { __typename?: 'AuthResponse', accessToken: string, refreshToken: string, accessTokenTtl: number, refreshTokenTtl: number } };

@@ -34,6 +34,17 @@ export const logoutDoc = gql`
   }
 `;
 
+export const refreshTokenDoc = gql`
+  mutation RefreshToken($refreshToken: String!) {
+    refreshToken(refreshToken: $refreshToken) {
+      accessToken
+      refreshToken
+      accessTokenTtl
+      refreshTokenTtl
+    }
+  }
+`;
+
 // export const changePasswordDoc = gql`
 //   mutation ChangePassword($currentPassword: String!, $newPassword: String!, $confirmPassword: String!) {
 //     changePassword(currentPassword: $currentPassword, newPassword: $newPassword, confirmPassword: $confirmPassword)

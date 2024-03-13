@@ -35,11 +35,11 @@ const Chat = () => {
   const [res] = useSubscription<MessageSubscription, any, MessageSubscriptionVariables>(
     {
       query: messageDoc,
-      context: useMemo(() => {
-        return {
-          fetchOptions: { headers: { Authorization: `Bearer ${getCookie(process.env.NEXT_PUBLIC_ACCESS_TOKEN_KEY)}` } },
-        };
-      }, []),
+      // context: useMemo(() => {
+      //   return {
+      //     fetchOptions: { headers: { Authorization: `Bearer ${getCookie(process.env.NEXT_PUBLIC_ACCESS_TOKEN_KEY)}` } },
+      //   };
+      // }, []),
     },
     (previous, data: MessageSubscription) => {
       // if (data) {

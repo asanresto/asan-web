@@ -1,17 +1,18 @@
 "use client";
 
 import { AppStore, makeStore } from "@/store";
-import { getCookie } from "@/utils/cookie";
+import { deleteCookie, getCookie, setCookie } from "@/utils/cookie";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { authExchange } from "@urql/exchange-auth";
 import { UrqlProvider, cacheExchange, createClient, fetchExchange, ssrExchange } from "@urql/next";
-import { subscriptionExchange } from "urql";
+import { GraphQLError } from "graphql";
+import { createClient as createWSClient } from "graphql-ws";
 import { SnackbarProvider } from "notistack";
 import { ReactNode, useMemo, useRef } from "react";
 import { Provider } from "react-redux";
+import { subscriptionExchange } from "urql";
 import Notifier from "../Notifier";
-import { createClient as createWSClient } from "graphql-ws";
 
 const wsClient = createWSClient({
   url: "ws://localhost:8080/query",
@@ -44,7 +45,7 @@ const Providers = ({ children }: { children: ReactNode }) => {
             },
             didAuthError: (error) => {
               return error.graphQLErrors.some((item) => {
-                return (item.extensions as any).originalError?.message === "Unauthorized";
+                return (item as GraphQLError).message === "unauthorized";
               });
             },
             willAuthError: (operation) => {
@@ -74,17 +75,47 @@ const Providers = ({ children }: { children: ReactNode }) => {
             refreshAuth: async () => {
               if (refreshToken) {
                 try {
-                  const refreshTokenUrl = new URL("api/refresh-token", process.env.NEXT_PUBLIC_BASE_URL);
-                  refreshTokenUrl.searchParams.append("refreshToken", refreshToken);
-                  const res = await fetch(refreshTokenUrl.href);
-                  if (!res.ok) {
+                  const res = await fetch(new URL("query", process.env.NEXT_PUBLIC_API_URL), {
+                    next: { revalidate: 0 },
+                    headers: {
+                      "Content-Type": "application/json",
+                    },
+                    method: "POST",
+                    body: JSON.stringify({
+                      query: `
+                        mutation {
+                          refreshToken(refreshToken: "${refreshToken}") {
+                            accessToken
+                            accessTokenTtl
+                            refreshToken
+                            refreshTokenTtl
+                          }
+                        }
+                      `,
+                    }),
+                  });
+                  const data = await res.json();
+                  if (!data.data?.refreshToken) {
+                    // deleteCookie(process.env.NEXT_PUBLIC_ACCESS_TOKEN_KEY);
+                    // deleteCookie(process.env.NEXT_PUBLIC_REFRESH_TOKEN_KEY);
                     return;
                   }
-                  const data = await res.json();
-                  accessToken = data.accessToken;
-                  refreshToken = data.refreshToken;
-                } catch {}
-
+                  accessToken = data.data.refreshToken.accessToken;
+                  refreshToken = data.data.refreshToken.refreshToken;
+                  setCookie(
+                    process.env.NEXT_PUBLIC_ACCESS_TOKEN_KEY,
+                    accessToken,
+                    data.data.refreshToken.accessTokenTtl,
+                  );
+                  setCookie(
+                    process.env.NEXT_PUBLIC_REFRESH_TOKEN_KEY,
+                    refreshToken,
+                    data.data.refreshToken.refreshTokenTtl,
+                  );
+                } catch {
+                  deleteCookie(process.env.NEXT_PUBLIC_ACCESS_TOKEN_KEY);
+                  deleteCookie(process.env.NEXT_PUBLIC_REFRESH_TOKEN_KEY);
+                }
                 // const result = await utilities.mutate(REFRESH_TOKEN_MUTATION, {
                 //   refreshToken,
                 // });
@@ -95,7 +126,6 @@ const Providers = ({ children }: { children: ReactNode }) => {
                 //   return;
                 // }
               }
-
               // This is where auth has gone wrong and we need to clean up and redirect to a login page
               // clearStorage();
               // window.location.reload();
