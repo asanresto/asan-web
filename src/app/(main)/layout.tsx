@@ -33,9 +33,9 @@ const jobPostingItems = [{ href: "/orders", label: "Job Postings" }];
 
 const employeeItems = [{ href: "/employees", label: "Employees" }];
 
-const customerItems = [
+const customerItems: { href: string; label: ReactNode; shouldUseATag?: boolean }[] = [
   { href: "/customers", label: "Customers" },
-  { href: "/alo", label: "Support" },
+  { href: "/customer-support", label: "Support", shouldUseATag: true },
 ];
 
 const MainLayout = async ({ children }: { children: ReactNode }) => {
@@ -153,7 +153,14 @@ const MainLayout = async ({ children }: { children: ReactNode }) => {
             <ListSubheader component="div">Customers</ListSubheader>
             {customerItems.map((item, index) => {
               return (
-                <ListItemButton key={index} LinkComponent={NextLink} href={item.href}>
+                <ListItemButton
+                  key={index}
+                  // Don't know if there's bug with nextjs or urql but when
+                  // first navigate to a page with useSubscription using NextLink, there will be infinite ws connections being initiated
+                  // maybe it has something to do with prefetch https://nextjs.org/docs/app/api-reference/components/link#prefetch
+                  LinkComponent={item.shouldUseATag ? "a" : NextLink}
+                  href={item.href}
+                >
                   <ListItemIcon></ListItemIcon>
                   <ListItemText primary={item.label} />
                 </ListItemButton>

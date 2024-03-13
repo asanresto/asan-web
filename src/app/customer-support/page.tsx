@@ -2,12 +2,9 @@ import { getMe } from "@/actions/user";
 import { ChatDouble, Dashboard, Search } from "@/assets";
 import Chat from "@/components/Chat";
 import { Avatar, Box, Button, Stack } from "@mui/material";
-import dynamic from "next/dynamic";
 import { Urbanist } from "next/font/google";
 import NextLink from "next/link";
 import { Suspense } from "react";
-
-const ChatThread = dynamic(() => import("@/components/Chat/MessageContainer"), { ssr: false });
 
 const urbanist = Urbanist({
   weight: ["300", "400", "500", "600", "700", "800"],
@@ -31,7 +28,7 @@ const CustomerSupportPage = async ({
       </Suspense>
       <Folders></Folders>
       <Contacts currentUserId={searchParams.userId} />
-      <ThreadContainer></ThreadContainer>
+      <ThreadContainer />
     </Box>
   );
 };
