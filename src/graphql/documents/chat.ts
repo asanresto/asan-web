@@ -5,6 +5,7 @@ export const messageDoc = gql`
     message {
       id
       content
+      senderId
     }
   }
 `;

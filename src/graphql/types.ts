@@ -35,7 +35,9 @@ export type LoginPayload = {
 export type Message = {
   __typename?: 'Message';
   content: Scalars['String']['output'];
+  createdAt?: Maybe<Scalars['Int']['output']>;
   id: Scalars['ID']['output'];
+  senderId?: Maybe<Scalars['String']['output']>;
 };
 
 export type Mutation = {
@@ -187,7 +189,7 @@ export type User = {
 export type MessageSubscriptionVariables = Exact<{ [key: string]: never; }>;
 
 
-export type MessageSubscription = { __typename?: 'Subscription', message: { __typename?: 'Message', id: string, content: string } };
+export type MessageSubscription = { __typename?: 'Subscription', message: { __typename?: 'Message', id: string, content: string, senderId?: string | null } };
 
 export type CreateChatRoomMutationVariables = Exact<{
   userIds: Array<Scalars['String']['input']> | Scalars['String']['input'];

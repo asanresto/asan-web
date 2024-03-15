@@ -5,6 +5,7 @@ import { createChatRoomDoc, messageDoc, sendMessageDoc } from "@/graphql/documen
 import {
   CreateChatRoomMutation,
   CreateChatRoomMutationVariables,
+  Message,
   MessageSubscription,
   MessageSubscriptionVariables,
   SendMessageMutation,
@@ -21,7 +22,7 @@ import MessageContainer from "./MessageContainer";
 
 const Chat = () => {
   const messageContainerRef = useRef<VListHandle | null>(null);
-  const [data, setData] = useState<{ content: string }[]>([]);
+  const [data, setData] = useState<Message[]>([]);
   const [message, setMessage] = useState("");
   const searchParams = useSearchParams();
   const userId = searchParams.get("userId");
@@ -33,13 +34,14 @@ const Chat = () => {
   );
 
   const [res, start] = useSubscription<MessageSubscription, any, MessageSubscriptionVariables>(
-    {
-      query: messageDoc,
-    },
+    { query: messageDoc },
     (previous, data: MessageSubscription) => {
       if (data) {
         setData((previous) => {
-          return [...previous, { content: data.message?.content }];
+          return [
+            ...previous,
+            { content: data.message?.content, senderId: data.message.senderId, id: data.message.id },
+          ];
         });
       }
       return;
@@ -52,9 +54,9 @@ const Chat = () => {
         ref={messageContainerRef}
         initialData={data}
         onLoadMore={(data) => {
-          setData((previous) => {
-            return [...data, ...previous];
-          });
+          // setData((previous) => {
+          //   return [...data, ...previous];
+          // });
         }}
       />
       <Box p={3}>

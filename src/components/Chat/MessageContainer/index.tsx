@@ -4,10 +4,7 @@ import { Box } from "@mui/material";
 import { forwardRef, useEffect, useRef } from "react";
 import { VList, VListHandle } from "virtua";
 import ChatBubble from "../ChatBubble";
-
-type Message = {
-  content: string;
-};
+import { Message } from "@/graphql/types";
 
 const MessageContainer = forwardRef<
   VListHandle | null,
@@ -43,8 +40,7 @@ const MessageContainer = forwardRef<
       }}
     >
       {initialData.map((item, index) => {
-        const isEven = index % 2 === 0;
-        return <ChatBubble key={index} variant={isEven ? "in" : "out"} content={item.content} />;
+        return <ChatBubble key={index} message={item} />;
       })}
     </VList>
   );

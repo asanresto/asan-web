@@ -16,9 +16,14 @@ import Notifier from "../Notifier";
 
 const wsClient = createWSClient({
   url: "ws://localhost:8080/query",
-  connectionParams: {
-    Authorization: `Bearer ${getCookie(process.env.NEXT_PUBLIC_ACCESS_TOKEN_KEY)}`,
+  connectionParams: () => {
+    return {
+      Authorization: `Bearer ${getCookie(process.env.NEXT_PUBLIC_ACCESS_TOKEN_KEY)}`,
+    };
   },
+  // shouldRetry: (errOrCloseEvent) => {
+  //   return true;
+  // },
 });
 
 const Providers = ({ children }: { children: ReactNode }) => {

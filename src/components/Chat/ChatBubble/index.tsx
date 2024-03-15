@@ -1,7 +1,10 @@
+import { Message } from "@/graphql/types";
 import { Box, Stack, alpha } from "@mui/material";
-import { ReactNode, memo } from "react";
+import { memo } from "react";
 
-const ChatBubble = memo(function ChatBubble({ variant, content }: { variant: "in" | "out"; content: ReactNode }) {
+const ChatBubble = memo(function ChatBubble({ message }: { message: Message }) {
+  // TODO: store current user id somewhere to compare with sender id
+  const variant = message.senderId !== "1" ? "in" : "out";
   const alignSelf = variant === "in" ? "flex-start" : "flex-end";
   const bgcolor = variant === "in" ? "#E8DDD9" : "#4B3425";
 
@@ -21,7 +24,7 @@ const ChatBubble = memo(function ChatBubble({ variant, content }: { variant: "in
         color={variant === "in" ? alpha("#1F160F", 0.64) : "white"}
       >
         <Box flex={1} fontSize="18px" fontWeight={600} letterSpacing="-0.02em" lineHeight="initial">
-          {content}
+          {message.content}
         </Box>
         <Box bgcolor={variant === "in" ? "#FE814B" : "#9BB068"} width="40px" height="40px" borderRadius="20px"></Box>
       </Stack>
