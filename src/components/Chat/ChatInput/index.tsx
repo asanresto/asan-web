@@ -1,7 +1,6 @@
 "use client";
 
-import { TextareaAutosize } from "@mui/base";
-import { styled } from "@mui/material";
+import { styled, TextareaAutosize } from "@mui/material";
 
 const ChatInput = styled(TextareaAutosize)(({ theme }) => {
   return `

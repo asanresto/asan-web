@@ -72,7 +72,6 @@ const AccountPage = () => {
             letterSpacing="-0.01em"
             color={alpha(themeColors.brown[80], 0.42)}
           >
-            <CalendarIcon width="24px" height="24px" color={themeColors.brown[80]} />
             <Stack direction="row" spacing={3}>
               <Box>
                 Last modified:{" "}
