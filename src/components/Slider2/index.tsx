@@ -1,5 +1,7 @@
-import { Slider, SliderProps } from "@mui/material";
+import { alpha, Slider, sliderClasses, SliderProps } from "@mui/material";
 import { useEffect, useRef, useState } from "react";
+
+import { themeColors } from "@/theme";
 
 const Slider2 = ({ min, max, step, value, marks, onChange, onChangeCommitted, ...props }: SliderProps) => {
   const sliderRef = useRef<HTMLSpanElement | null>(null);
@@ -45,6 +47,28 @@ const Slider2 = ({ min, max, step, value, marks, onChange, onChangeCommitted, ..
               return { ...item, value: sliderWidth * ((item.value - (min ?? 0)) / ((max ?? 100) - (min ?? 0))) };
             })
       }
+      sx={{
+        height: "8px",
+        [`.${sliderClasses.thumb}`]: {
+          backgroundColor: themeColors.green[50],
+        },
+        [`.${sliderClasses.track}`]: {
+          backgroundColor: themeColors.green[50],
+          border: "none",
+        },
+        [`.${sliderClasses.rail}`]: {
+          backgroundColor: themeColors.grey[10],
+          opacity: 1,
+        },
+        [`.${sliderClasses.mark}`]: {
+          display: "none",
+        },
+        [`.${sliderClasses.markLabel}`]: {
+          fontSize: "16px",
+          fontWeight: 700,
+          color: alpha(themeColors.grey[100], 0.64),
+        },
+      }}
       {...props}
     />
   );

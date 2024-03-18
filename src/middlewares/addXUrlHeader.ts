@@ -1,5 +1,6 @@
-import { MiddlewareFactory } from "@/types";
 import { NextFetchEvent, NextMiddleware, NextRequest } from "next/server";
+
+import { MiddlewareFactory } from "@/types";
 
 export const addXUrlHeader: MiddlewareFactory = (next: NextMiddleware) => {
   return async (request: NextRequest, event: NextFetchEvent) => {

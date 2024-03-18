@@ -1,20 +1,39 @@
 "use client";
 
-import { logoutDoc } from "@/graphql/documents/user";
-import { LogoutMutation, LogoutMutationVariables } from "@/graphql/types";
-import { getCookie } from "@/utils/cookie";
 import { IconButton, IconButtonProps, Menu, MenuItem, Typography } from "@mui/material";
 import { useMutation } from "@urql/next";
 import { useRouter } from "next/navigation";
 import { forwardRef, useState } from "react";
 
-const settings = ["Account", "Logout"];
+import { logoutDoc } from "@/graphql/documents/user";
+import { LogoutMutation, LogoutMutationVariables } from "@/graphql/types";
+import { getCookie } from "@/utils/cookie";
 
 const LoggedInUser = forwardRef<any, IconButtonProps>(function LoggedInUser({ children, ...props }, ref) {
   const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
   const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
   const [logoutResult, logout] = useMutation<LogoutMutation, LogoutMutationVariables>(logoutDoc);
   const router = useRouter();
+
+  const menuItems = [
+    {
+      label: "Account",
+      onClick: () => {
+        router.replace("/account");
+      },
+    },
+    {
+      label: "Log out",
+      onClick: async () => {
+        await logout({ refreshToken: "" });
+        // const refreshToken = getCookie(process.env.NEXT_PUBLIC_REFRESH_TOKEN_KEY);
+        // if (refreshToken) {
+        //   await logout({ refreshToken: refreshToken });
+        // }
+        router.replace("/login");
+      },
+    },
+  ];
 
   return (
     <>
@@ -46,26 +65,15 @@ const LoggedInUser = forwardRef<any, IconButtonProps>(function LoggedInUser({ ch
           setAnchorElUser(null);
         }}
       >
-        {settings.map((setting) => (
+        {menuItems.map(({ label, onClick }, index) => (
           <MenuItem
-            key={setting}
+            key={index}
             onClick={async () => {
               setAnchorElUser(null);
-              if (setting === "Logout") {
-                const refreshToken = getCookie(process.env.NEXT_PUBLIC_REFRESH_TOKEN_KEY);
-                if (refreshToken) {
-                  await logout({ refreshToken: refreshToken });
-                }
-                router.replace("/login");
-                return;
-              }
-              if (setting === "Account") {
-                router.replace("/account");
-                return;
-              }
+              onClick();
             }}
           >
-            <Typography textAlign="center">{setting}</Typography>
+            <Typography textAlign="center">{label}</Typography>
           </MenuItem>
         ))}
       </Menu>

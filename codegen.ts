@@ -8,6 +8,14 @@ const config: CodegenConfig = {
   generates: {
     "src/graphql/types.ts": {
       plugins: ["typescript", "typescript-operations"],
+      config: {
+        scalars: {
+          Upload: {
+            input: "File",
+            output: "string",
+          },
+        },
+      },
     },
   },
 };

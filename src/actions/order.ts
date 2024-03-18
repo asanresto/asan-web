@@ -1,7 +1,8 @@
 "use server";
 
-import { fetchWithReauth } from "@/utils/fetchWithReauth";
 import { cookies } from "next/headers";
+
+import { fetchWithReauth } from "@/utils/fetchWithReauth";
 
 export const getOrders = async ({ itemsPerPage, page }: { itemsPerPage: number; page: number }) => {
   const payload = await fetchWithReauth(new URL("api/graphql", process.env.NEXT_PUBLIC_BASE_URL), {

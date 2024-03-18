@@ -7,9 +7,7 @@ export const area = z.object({
   height: z.number(),
 });
 
-export const croppedFileSchema = z.object({
-  file: z.optional(z.instanceof(File)),
+export const croppedAreaSchema = z.object({
   croppedArea: z.optional(area),
   croppedAreaPixels: z.optional(area),
-  url: z.optional(z.string().nullable()),
 });

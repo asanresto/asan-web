@@ -1,15 +1,13 @@
 /** @type {import('next').NextConfig} */
 
-const withBundleAnalyzer = require('@next/bundle-analyzer')({
-  enabled: process.env.ANALYZE === 'true',
-})
+const withBundleAnalyzer = require("@next/bundle-analyzer")({
+  enabled: process.env.ANALYZE === "true",
+});
 
 const nextConfig = {
-  webpack:(config)=> {
+  webpack: (config) => {
     // Grab the existing rule that handles SVG imports
-    const fileLoaderRule = config.module.rules.find((rule) =>
-      rule.test?.test?.('.svg'),
-    )
+    const fileLoaderRule = config.module.rules.find((rule) => rule.test?.test?.(".svg"));
     config.module.rules.push(
       // Reapply the existing rule, but only for svg imports ending in ?url
       {
@@ -24,22 +22,23 @@ const nextConfig = {
         resourceQuery: { not: [...fileLoaderRule.resourceQuery.not, /url/] }, // exclude if *.svg?url
         use: [{ loader: "@svgr/webpack", options: { icon: true } }],
       },
-    )
+    );
     // Modify the file loader rule to ignore *.svg, since we have it handled now.
-    fileLoaderRule.exclude = /\.svg$/i
-    return config
+    fileLoaderRule.exclude = /\.svg$/i;
+    return config;
   },
-  output: 'standalone',
+  // output: "standalone",
   reactStrictMode: false,
   images: {
     remotePatterns: [
-      {
-        protocol: "https",
-        hostname: "res.cloudinary.com",
-      },
+      { hostname: "*" },
+      // {
+      //   protocol: "https",
+      //   hostname: "res.cloudinary.com",
+      // },
     ],
   },
-  transpilePackages: ['@mui/x-charts']
+  transpilePackages: ["@mui/x-charts"],
 };
 
 module.exports = withBundleAnalyzer(nextConfig);

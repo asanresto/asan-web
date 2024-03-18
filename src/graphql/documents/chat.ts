@@ -17,7 +17,7 @@ export const createChatRoomDoc = gql`
 `;
 
 export const sendMessageDoc = gql`
-  mutation SendMessage($roomId: String!, $message: String!) {
+  mutation SendChatMessage($roomId: String!, $message: String!) {
     sendChatMessage(message: $message, roomId: $roomId)
   }
 `;

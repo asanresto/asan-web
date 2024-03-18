@@ -1,17 +1,24 @@
 "use client";
 
-import { loginDoc } from "@/graphql/documents/user";
-import { LoginMutation, MutationLoginArgs } from "@/graphql/types";
-import { LoginValues, loginSchema } from "@/models/auth/login";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Button, Stack, TextField } from "@mui/material";
+import { Box, Button, FormControlLabel, formControlLabelClasses, Stack, TextField } from "@mui/material";
+import NextLink from "next/link";
 import { useRouter } from "next/navigation";
 import { useSnackbar } from "notistack";
 import { useEffect } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { useMutation } from "urql";
 import { ZodIssue } from "zod";
+
+import { EmailIcon, EyeFilledIcon, LockIcon } from "@/assets";
+import { loginDoc } from "@/graphql/documents/user";
+import { LoginMutation, MutationLoginArgs } from "@/graphql/types";
+import { loginSchema, LoginValues } from "@/models/auth/login";
+import { themeColors } from "@/theme";
+
 import ControlledTextField from "../ControlledTextField";
+import CustomCheckbox from "../CustomCheckbox";
+import PasswordTextField from "../PasswordTextField";
 import TextField2 from "../TextFields2";
 
 const LoginForm = () => {
@@ -38,31 +45,87 @@ const LoginForm = () => {
 
   return (
     <FormProvider {...methods}>
-      <form
+      <Box
+        component="form"
         noValidate
-        onSubmit={handleSubmit(async (data) => {
-          const payload = await login({ email: data.email, password: data.password });
-          if (payload.data?.login) {
-            const url = new URL("authenticate", process.env.NEXT_PUBLIC_BASE_URL);
-            url.searchParams.append("accessToken", payload.data?.login?.accessToken!);
-            url.searchParams.append("refreshToken", payload.data?.login?.refreshToken!);
-            router.replace(url.href);
-          } else {
-            enqueueSnackbar("Failed to login", { variant: "error" });
-          }
-        })}
+        onSubmit={handleSubmit(
+          async (data) => {
+            const payload = await login({ email: data.email, password: data.password });
+            if (payload.data?.login) {
+              //   const url = new URL("authenticate", process.env.NEXT_PUBLIC_BASE_URL);
+              //   url.searchParams.append("accessToken", payload.data?.login?.accessToken!);
+              //   url.searchParams.append("refreshToken", payload.data?.login?.refreshToken!);
+              //   router.replace(url.href);
+              router.replace("/new-layout/products");
+            } else {
+              // enqueueSnackbar("Failed to login", { variant: "error" });
+            }
+          },
+          (errors) => {
+            console.log(errors);
+          },
+        )}
       >
-        <Stack width="448px" maxWidth="100%" spacing={2}>
-          <ControlledTextField<LoginValues> name="email" textField={<TextField2 required label="Email" fullWidth />} />
+        <Stack spacing={2} width="100%">
+          <ControlledTextField<LoginValues>
+            name="email"
+            textField={
+              <TextField2
+                required
+                label="Email"
+                fullWidth
+                InputProps={{
+                  startAdornment: <EmailIcon width="24px" height="24px" style={{ marginLeft: "16px" }} />,
+                }}
+              />
+            }
+          />
           <ControlledTextField<LoginValues>
             name="password"
-            textField={<TextField2 type="password" required label="Password" fullWidth />}
+            textField={
+              <PasswordTextField
+                required
+                label="Password"
+                fullWidth
+                InputProps={{
+                  startAdornment: <LockIcon width="24px" height="24px" style={{ marginLeft: "16px" }} />,
+                }}
+              />
+            }
           />
-          <Button type="submit" variant="contained" disabled={loginResult.fetching} size="medium">
+          <Stack direction="row" py={2} spacing={2} justifyContent="space-between">
+            <FormControlLabel
+              control={<CustomCheckbox variant="outlined" />}
+              label={
+                <Box
+                  fontSize="14px"
+                  fontWeight={600}
+                  lineHeight="initial"
+                  letterSpacing="-0.01em"
+                  color={themeColors.brown[80]}
+                  ml={1}
+                >
+                  Remember for 30 days
+                </Box>
+              }
+            />
+            <Box
+              component={NextLink}
+              href="/forgot-password"
+              fontSize="16px"
+              fontWeight={700}
+              lineHeight="initial"
+              color={themeColors.green[50]}
+              sx={{ textDecoration: "none" }}
+            >
+              Forgot Password
+            </Box>
+          </Stack>
+          <Button type="submit" variant="contained" color="green1" disabled={loginResult.fetching} size="medium">
             Login
           </Button>
         </Stack>
-      </form>
+      </Box>
     </FormProvider>
   );
 };

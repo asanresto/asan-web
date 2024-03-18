@@ -1,6 +1,12 @@
 "use client";
 
-import { ArrowCurveBottomLeft } from "@/assets";
+import { Box, Button, Stack } from "@mui/material";
+import { useSearchParams } from "next/navigation";
+import { useRef, useState } from "react";
+import { useMutation, useSubscription } from "urql";
+import { VListHandle } from "virtua";
+
+import { ArrowCurveBottomLeftIcon } from "@/assets";
 import { createChatRoomDoc, messageDoc, sendMessageDoc } from "@/graphql/documents/chat";
 import {
   CreateChatRoomMutation,
@@ -8,15 +14,11 @@ import {
   Message,
   MessageSubscription,
   MessageSubscriptionVariables,
-  SendMessageMutation,
-  SendMessageMutationVariables,
+  SendChatMessageMutation,
+  SendChatMessageMutationVariables,
 } from "@/graphql/types";
-import { getCookie } from "@/utils/cookie";
-import { Box, Button, Stack } from "@mui/material";
-import { useSearchParams } from "next/navigation";
-import { useEffect, useMemo, useRef, useState } from "react";
-import { useMutation, useSubscription } from "urql";
-import { VListHandle } from "virtua";
+import { themeColors } from "@/theme";
+
 import ChatInput from "./ChatInput";
 import MessageContainer from "./MessageContainer";
 
@@ -29,9 +31,7 @@ const Chat = () => {
   const [createChatRoomResult, createChatRoom] = useMutation<CreateChatRoomMutation, CreateChatRoomMutationVariables>(
     createChatRoomDoc,
   );
-  const [sendMessageResult, sendMessage] = useMutation<SendMessageMutation, SendMessageMutationVariables>(
-    sendMessageDoc,
-  );
+  const [, sendChatMessage] = useMutation<SendChatMessageMutation, SendChatMessageMutationVariables>(sendMessageDoc);
 
   const [res, start] = useSubscription<MessageSubscription, any, MessageSubscriptionVariables>(
     { query: messageDoc },
@@ -87,7 +87,7 @@ const Chat = () => {
             />
           </Box>
           <Button
-            sx={{ bgcolor: "#9BB068", width: "64px", height: "64px", borderRadius: "32px" }}
+            sx={{ bgcolor: themeColors.green[50], width: "64px", height: "64px", borderRadius: "32px" }}
             disabled={!message}
             onClick={async () => {
               // if (!data.length) {
@@ -96,12 +96,12 @@ const Chat = () => {
               // setData((prevData) => {
               //   return [...prevData, { content: message }];
               // });
-              await sendMessage({ message: message, roomId: "1" });
+              await sendChatMessage({ message: message, roomId: "1" });
               setMessage("");
               messageContainerRef.current?.scrollToIndex(data.length);
             }}
           >
-            <ArrowCurveBottomLeft width="32px" height="32px" />
+            <ArrowCurveBottomLeftIcon width="32px" height="32px" />
           </Button>
         </Stack>
       </Box>

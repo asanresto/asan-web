@@ -1,22 +1,23 @@
 import { gql } from "urql";
 
-// export const getProductsDoc = gql`
-//   query GetProducts($pagination: Pagination, $sorting: ProductSorting) {
-//     products(pagination: $pagination, sorting: $sorting) {
-//       paginationMetadata {
-//         itemsPerPage
-//         page
-//         totalItems
-//         totalPages
-//       }
-//       data {
-//         id
-//         name
-//         price
-//       }
-//     }
-//   }
-// `;
+export const getProductsDoc = gql`
+  query Products($limit: Int, $page: Int, $filter: ProductFiltersInput, $sort: String, $search: String) {
+    products(filter: $filter, limit: $limit, page: $page, sort: $sort, search: $search) {
+      items {
+        id
+        name
+        price
+        description
+        status
+        createdAt
+        updatedAt
+      }
+      page
+      limit
+      count
+    }
+  }
+`;
 
 // export const getProductDoc = gql`
 //   query GetProduct($id: Int!) {
@@ -32,11 +33,19 @@ import { gql } from "urql";
 //   }
 // `;
 
-// export const createProductDoc = gql`
-//   mutation CreateProduct($name: String!, $price: Float!, $description: String!, $images: [CroppedFile!]!) {
-//     createProduct(name: $name, price: $price, images: $images, description: $description)
-//   }
-// `;
+export const createProductDoc = gql`
+  mutation CreateProduct($input: NewProduct!) {
+    createProduct(input: $input) {
+      id
+      name
+      price
+      description
+      status
+      createdAt
+      updatedAt
+    }
+  }
+`;
 
 // export const updateProductDoc = gql`
 //   mutation UpdateProduct(

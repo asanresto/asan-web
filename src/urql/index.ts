@@ -5,6 +5,10 @@ const makeUrqlClient = () => {
   return createClient({
     url: "http://localhost:8080/query",
     exchanges: [cacheExchange, fetchExchange],
+    fetchOptions: {
+      credentials: "include",
+      mode: "cors",
+    },
   });
 };
 

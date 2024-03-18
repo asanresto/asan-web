@@ -18,6 +18,7 @@ export const fetchWithReauth = async (input: string | URL | Request, init?: Requ
     if (refreshToken) {
       const res = await fetch(new URL("query", process.env.NEXT_PUBLIC_API_URL), {
         next: { revalidate: 0 },
+        credentials: "include",
         headers: {
           "Content-Type": "application/json",
         },

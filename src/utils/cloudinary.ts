@@ -1,11 +1,9 @@
-import { CroppedFile } from "@/graphql/types";
 import sharp from "sharp";
+
+// import { CroppedFile } from "@/graphql/types";
 const cloudinary = require("cloudinary").v2;
 
-export const uploadToCloudinary = async (
-  data: CroppedFile,
-  { folder, publicId }: { folder: string; publicId?: string },
-) => {
+export const uploadToCloudinary = async (data: any, { folder, publicId }: { folder: string; publicId?: string }) => {
   const buffer = await sharp(Buffer.from(await data.file.arrayBuffer()))
     .extract({
       left: data.croppedAreaPixels.x,

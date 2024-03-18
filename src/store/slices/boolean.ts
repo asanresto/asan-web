@@ -1,5 +1,6 @@
-import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
+import { createSlice } from "@reduxjs/toolkit";
+
 import { RootState } from "..";
 
 // Define a type for the slice state
@@ -18,6 +19,9 @@ export const booleanSlice = createSlice({
     },
     off: (state, action: PayloadAction<string>) => {
       state[action.payload] = false;
+    },
+    toggle: (state, action: PayloadAction<string>) => {
+      state[action.payload] = !state[action.payload];
     },
   },
 });

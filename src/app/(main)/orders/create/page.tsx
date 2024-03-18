@@ -1,6 +1,7 @@
+import { Box } from "@mui/material";
+
 import BackButton from "@/components/BackButton";
 import ProductForm from "@/components/Product/CreateProductForm";
-import { Box } from "@mui/material";
 
 const CreateProductPage = () => {
   return (

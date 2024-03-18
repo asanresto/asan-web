@@ -1,79 +1,69 @@
 "use client";
 
-import { createProductDoc } from "@/graphql/documents/product";
-import { CreateProductMutation, CreateProductMutationVariables } from "@/graphql/types";
-import { EmployeeValues, employeeSchema } from "@/models/employee";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Autocomplete, Stack, TextField } from "@mui/material";
-import { useSnackbar } from "notistack";
-import { FormProvider, useForm } from "react-hook-form";
-import { useMutation } from "urql";
-import ControlledTextField from "../../ControlledTextField";
-import ProductImageCropperDialog from "./ProductImageCropperDialog";
-
 const EmployeeForm = ({ variant = "create" }: { variant?: "create" | "update" }) => {
-  const methods = useForm<EmployeeValues>({
-    resolver: zodResolver(employeeSchema),
-  });
-  const { handleSubmit } = methods;
-  const [result, createProduct] = useMutation<CreateProductMutation, CreateProductMutationVariables>(createProductDoc);
-  const { enqueueSnackbar } = useSnackbar();
+  return null;
+  // const methods = useForm<EmployeeValues>({
+  //   resolver: zodResolver(employeeSchema),
+  // });
+  // const { handleSubmit } = methods;
+  // const [result, createProduct] = useMutation<CreateProductMutation, CreateProductMutationVariables>(createProductDoc);
+  // const { enqueueSnackbar } = useSnackbar();
 
-  return (
-    <FormProvider {...methods}>
-      <form
-        onSubmit={handleSubmit(async (data) => {
-          // const payload = await createProduct({
-          //   name: data.name,
-          //   price: data.price,
-          //   images: data.images.map((item) => {
-          //     return { file: item.file!, croppedAreaPixels: item.croppedAreaPixels! };
-          //   }),
-          // });
-          // if (payload.data) {
-          //   enqueueSnackbar({ message: "Created product successfully", variant: "success" });
-          // } else {
-          //   enqueueSnackbar({ message: "Failed to create product", variant: "error" });
-          // }
-        })}
-      >
-        <Stack spacing={2}>
-          <ControlledTextField<EmployeeValues> textField={<TextField required label="Name" />} name="name" />
-          <ControlledTextField<EmployeeValues> textField={<TextField required label="Email" />} name="email" />
-          <Autocomplete
-            disablePortal
-            options={[
-              { label: "Admin", value: 1 },
-              { label: "Manager", value: 2 },
-            ]}
-            renderInput={(params) => (
-              <TextField {...params} label="Role" variant="standard" InputLabelProps={{ shrink: true }} />
-            )}
-          />
-          <Autocomplete
-            disablePortal
-            options={[
-              { label: "Admin", value: 1 },
-              { label: "Manager", value: 2 },
-            ]}
-            renderInput={(params) => (
-              <TextField {...params} label="Outlet" variant="standard" InputLabelProps={{ shrink: true }} />
-            )}
-          />
-          {/* <ControlledTextField<EmployeeValues> textField={<TextField required label="Price" />} name="price" />
-          <Box>Images</Box>
-          <Images />
-          <Stack direction="row" spacing={2} justifyContent="flex-end">
-            <Button>Cancel</Button>
-            <Button autoFocus type="submit" variant="contained">
-              Create
-            </Button>
-          </Stack> */}
-        </Stack>
-      </form>
-      <ProductImageCropperDialog />
-    </FormProvider>
-  );
+  // return (
+  //   <FormProvider {...methods}>
+  //     <form
+  //       onSubmit={handleSubmit(async (data) => {
+  //         // const payload = await createProduct({
+  //         //   name: data.name,
+  //         //   price: data.price,
+  //         //   images: data.images.map((item) => {
+  //         //     return { file: item.file!, croppedAreaPixels: item.croppedAreaPixels! };
+  //         //   }),
+  //         // });
+  //         // if (payload.data) {
+  //         //   enqueueSnackbar({ message: "Created product successfully", variant: "success" });
+  //         // } else {
+  //         //   enqueueSnackbar({ message: "Failed to create product", variant: "error" });
+  //         // }
+  //       })}
+  //     >
+  //       <Stack spacing={2}>
+  //         <ControlledTextField<EmployeeValues> textField={<TextField required label="Name" />} name="name" />
+  //         <ControlledTextField<EmployeeValues> textField={<TextField required label="Email" />} name="email" />
+  //         <Autocomplete
+  //           disablePortal
+  //           options={[
+  //             { label: "Admin", value: 1 },
+  //             { label: "Manager", value: 2 },
+  //           ]}
+  //           renderInput={(params) => (
+  //             <TextField {...params} label="Role" variant="standard" InputLabelProps={{ shrink: true }} />
+  //           )}
+  //         />
+  //         <Autocomplete
+  //           disablePortal
+  //           options={[
+  //             { label: "Admin", value: 1 },
+  //             { label: "Manager", value: 2 },
+  //           ]}
+  //           renderInput={(params) => (
+  //             <TextField {...params} label="Outlet" variant="standard" InputLabelProps={{ shrink: true }} />
+  //           )}
+  //         />
+  //         {/* <ControlledTextField<EmployeeValues> textField={<TextField required label="Price" />} name="price" />
+  //         <Box>Images</Box>
+  //         <Images />
+  //         <Stack direction="row" spacing={2} justifyContent="flex-end">
+  //           <Button>Cancel</Button>
+  //           <Button autoFocus type="submit" variant="contained">
+  //             Create
+  //           </Button>
+  //         </Stack> */}
+  //       </Stack>
+  //     </form>
+  //     <ProductImageCropperDialog />
+  //   </FormProvider>
+  // );
 };
 
 // const Images = () => {

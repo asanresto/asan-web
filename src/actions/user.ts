@@ -1,11 +1,15 @@
 "use server";
 
-import { fetchWithReauth } from "@/utils/fetchWithReauth";
 import { cookies } from "next/headers";
+import { CombinedError } from "urql";
 
-export const getMe = async () => {
-  return await fetchWithReauth(new URL("query", process.env.NEXT_PUBLIC_API_URL), {
+import { MeQuery } from "@/graphql/types";
+import { fetchWithReauth } from "@/utils/fetchWithReauth";
+
+export const getMe = async (): Promise<{ data?: MeQuery; error?: CombinedError }> => {
+  const data = await fetchWithReauth(new URL("query", process.env.NEXT_PUBLIC_API_URL), {
     next: { tags: ["me"], revalidate: 60 },
+    credentials: "include",
     headers: {
       Authorization: `Bearer ${cookies().get(process.env.NEXT_PUBLIC_ACCESS_TOKEN_KEY)?.value}`,
       "Content-Type": "application/json",
@@ -24,4 +28,10 @@ export const getMe = async () => {
       `,
     }),
   });
+  if (data.data?.me?.id) {
+    try {
+      cookies().set(process.env.NEXT_PUBLIC_USER_ID_KEY, data.data.me?.id);
+    } catch {}
+  }
+  return data;
 };

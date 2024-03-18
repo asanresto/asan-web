@@ -1,8 +1,9 @@
+import { Dialog, DialogProps } from "@mui/material";
+import { forwardRef } from "react";
+
 import { useAppDispatch, useAppSelector } from "@/store";
 import { booleanActions } from "@/store/slices/boolean";
 import { Optional } from "@/types";
-import { Dialog, DialogProps } from "@mui/material";
-import { forwardRef } from "react";
 
 type AppDialogProps = Optional<DialogProps, "open"> & { booleanKey: string; closeOnClickOutside?: boolean };
 

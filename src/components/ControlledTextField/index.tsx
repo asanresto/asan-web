@@ -1,5 +1,5 @@
 import { TextFieldProps } from "@mui/material";
-import { ReactElement, cloneElement } from "react";
+import { cloneElement, ReactElement } from "react";
 import { Controller, ControllerProps, FieldValues } from "react-hook-form";
 
 const ControlledTextField = <TFieldValues extends FieldValues>({
@@ -8,7 +8,7 @@ const ControlledTextField = <TFieldValues extends FieldValues>({
 }: { textField: ReactElement<TextFieldProps> } & Omit<ControllerProps<TFieldValues>, "render">) => {
   return (
     <Controller
-      render={({ field: { disabled, ...field }, fieldState: { error, invalid }, formState }) => {
+      render={({ field: { disabled, ...field }, fieldState: { error, invalid } }) => {
         return cloneElement(textField, {
           ...field,
           disabled: disabled ?? textField.props.disabled,

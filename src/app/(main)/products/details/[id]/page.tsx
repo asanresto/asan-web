@@ -1,8 +1,9 @@
+import { Box, Stack } from "@mui/material";
+
 import { getProduct } from "@/actions/product";
 import BackButton from "@/components/BackButton";
 import ProductStock from "@/components/Product/ProductStock";
 import UpdateProductForm from "@/components/Product/UpdateProductForm";
-import { Box, Stack } from "@mui/material";
 
 const toString = (o: Record<string, any> | undefined | null) => {
   if (o === undefined || o === null) {

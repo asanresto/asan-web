@@ -1,6 +1,5 @@
 "use client";
 
-import { PaginationMetadata } from "@/graphql/types";
 import {
   Box,
   Button,
@@ -21,17 +20,17 @@ import {
 import { visuallyHidden } from "@mui/utils";
 import {
   ColumnDef,
-  SortingState,
   flexRender,
   getCoreRowModel,
   getSortedRowModel,
+  SortingState,
   useReactTable,
 } from "@tanstack/react-table";
 import NextLink from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useMemo, useState } from "react";
 
-const ProductTable = ({ data, paginationMetadata }: { data?: any[]; paginationMetadata?: PaginationMetadata }) => {
+const ProductTable = ({ data, paginationMetadata }: { data?: any[]; paginationMetadata?: any }) => {
   const searchParams = useSearchParams();
   const page = searchParams.get("page");
   const itemsPerPage = searchParams.get("itemsPerPage");

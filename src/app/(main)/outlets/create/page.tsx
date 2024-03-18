@@ -1,6 +1,7 @@
+import { Box } from "@mui/material";
+
 import BackButton from "@/components/BackButton";
 import OutletForm from "@/components/OutletForm";
-import { Box } from "@mui/material";
 
 const CreateOutletPage = () => {
   return (

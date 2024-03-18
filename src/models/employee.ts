@@ -1,5 +1,6 @@
 import { z } from "zod";
-import { croppedFileSchema } from "./common";
+
+import { croppedAreaSchema } from "./common";
 
 export const employeeSchema = z.object({
   name: z.string().min(1, "Please fill this field"),

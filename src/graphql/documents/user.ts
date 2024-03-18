@@ -1,18 +1,18 @@
 import { gql } from "@urql/next";
 
-// export const updateAccountDoc = gql`
-//   mutation Account($name: String, $avatar: CroppedFile, $deleteAvatar: Boolean) {
-//     account(name: $name, avatar: $avatar, deleteAvatar: $deleteAvatar)
-//   }
-// `;
+export const updateAccountDoc = gql`
+  mutation UpdateAccount($avatar: Upload, $name: String) {
+    updateAccount(avatar: $avatar, name: $name)
+  }
+`;
 
 export const getMeDoc = gql`
   query Me {
     me {
-      # avatar
-      # email
+      email
       id
       name
+      avatarUrl
     }
   }
 `;
@@ -29,7 +29,7 @@ export const loginDoc = gql(`
 `);
 
 export const logoutDoc = gql`
-  mutation Logout($refreshToken: String!) {
+  mutation Logout($refreshToken: String) {
     logOut(refreshToken: $refreshToken)
   }
 `;
@@ -45,8 +45,19 @@ export const refreshTokenDoc = gql`
   }
 `;
 
-// export const changePasswordDoc = gql`
-//   mutation ChangePassword($currentPassword: String!, $newPassword: String!, $confirmPassword: String!) {
-//     changePassword(currentPassword: $currentPassword, newPassword: $newPassword, confirmPassword: $confirmPassword)
-//   }
-// `;
+export const getUsersDoc = gql`
+  query Users {
+    users {
+      id
+      name
+      email
+      avatarUrl
+    }
+  }
+`;
+
+export const changePasswordDoc = gql`
+  mutation ChangePassword($currentPassword: String!, $newPassword: String!, $confirmPassword: String!) {
+    changePassword(currentPassword: $currentPassword, newPassword: $newPassword, confirmPassword: $confirmPassword)
+  }
+`;

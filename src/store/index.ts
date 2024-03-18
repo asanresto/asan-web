@@ -1,5 +1,6 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { TypedUseSelectorHook, useDispatch, useSelector, useStore } from "react-redux";
+
 import { booleanReducer } from "./slices/boolean";
 import { notifierReducer } from "./slices/notifier";
 

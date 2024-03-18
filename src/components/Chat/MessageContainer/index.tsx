@@ -3,8 +3,10 @@
 import { Box } from "@mui/material";
 import { forwardRef, useEffect, useRef } from "react";
 import { VList, VListHandle } from "virtua";
-import ChatBubble from "../ChatBubble";
+
 import { Message } from "@/graphql/types";
+
+import ChatBubble from "../ChatBubble";
 
 const MessageContainer = forwardRef<
   VListHandle | null,

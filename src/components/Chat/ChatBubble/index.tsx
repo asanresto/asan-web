@@ -1,10 +1,14 @@
-import { Message } from "@/graphql/types";
-import { Box, Stack, alpha } from "@mui/material";
+import { alpha, Box, Stack } from "@mui/material";
+import { cookies } from "next/headers";
 import { memo } from "react";
+
+import { Message } from "@/graphql/types";
+import { themeColors } from "@/theme";
+import { getCookie } from "@/utils/cookie";
 
 const ChatBubble = memo(function ChatBubble({ message }: { message: Message }) {
   // TODO: store current user id somewhere to compare with sender id
-  const variant = message.senderId !== "1" ? "in" : "out";
+  const variant = message.senderId !== getCookie(process.env.NEXT_PUBLIC_USER_ID_KEY) ? "in" : "out";
   const alignSelf = variant === "in" ? "flex-start" : "flex-end";
   const bgcolor = variant === "in" ? "#E8DDD9" : "#4B3425";
 
@@ -26,7 +30,12 @@ const ChatBubble = memo(function ChatBubble({ message }: { message: Message }) {
         <Box flex={1} fontSize="18px" fontWeight={600} letterSpacing="-0.02em" lineHeight="initial">
           {message.content}
         </Box>
-        <Box bgcolor={variant === "in" ? "#FE814B" : "#9BB068"} width="40px" height="40px" borderRadius="20px"></Box>
+        <Box
+          bgcolor={variant === "in" ? "#FE814B" : themeColors.green[50]}
+          width="40px"
+          height="40px"
+          borderRadius="20px"
+        ></Box>
       </Stack>
       <Box
         alignSelf={alignSelf}

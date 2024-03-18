@@ -1,6 +1,5 @@
 "use client";
 
-import { PaginationMetadata } from "@/graphql/types";
 import {
   Box,
   Button,
@@ -23,7 +22,7 @@ import NextLink from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useMemo, useState } from "react";
 
-const OutletTable = ({ data, paginationMetadata }: { data?: any[]; paginationMetadata?: PaginationMetadata }) => {
+const OutletTable = ({ data, paginationMetadata }: { data?: any[]; paginationMetadata?: any }) => {
   const [dense, setDense] = useState(false);
   const searchParams = useSearchParams();
   const router = useRouter();
