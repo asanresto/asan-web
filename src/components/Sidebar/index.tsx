@@ -18,9 +18,9 @@ const SIDEBAR_ITEMS: SidebarItemProps[] = [
   { Icon: DashboardIcon, href: "/new-layout" },
   { Icon: ChatIcon, href: "/new-layout/customer-support" },
   { Icon: GearIcon, href: "/new-layout/products" },
-  { Icon: BookmarkIcon, href: "/new-layout/customer-support" },
+  { Icon: BookmarkIcon, href: "/new-layout/saved" },
   { Icon: UserIcon, href: "/new-layout/permissions" },
-  { Icon: DocumentIcon, href: "/new-layout/customer-support" },
+  { Icon: DocumentIcon, href: "/new-layout/tasks" },
 ];
 
 const Sidebar = () => {

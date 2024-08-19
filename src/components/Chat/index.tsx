@@ -59,52 +59,43 @@ const Chat = () => {
           // });
         }}
       />
-      <Box p={3}>
-        <Stack
-          direction="row"
-          spacing="24px"
-          p={3}
-          borderRadius="32px"
-          width="100%"
-          bgcolor="#F7F4F2"
-          alignItems="center"
-        >
-          <Box
-            component="label"
-            flex={1}
-            alignSelf="stretch"
-            display="flex"
-            alignItems="center"
-            sx={{ cursor: "text" }}
-          >
-            <ChatInput
-              maxRows={3}
-              placeholder="Type your message here"
-              value={message}
-              onChange={(event) => {
-                setMessage(event.target.value);
-              }}
-            />
-          </Box>
-          <Button
-            sx={{ bgcolor: themeColors.green[50], width: "64px", height: "64px", borderRadius: "32px" }}
-            disabled={!message}
-            onClick={async () => {
-              // if (!data.length) {
-              //   await createChatRoom({ userIds: [] });
-              // }
-              // setData((prevData) => {
-              //   return [...prevData, { content: message }];
-              // });
-              await sendChatMessage({ message: message, roomId: "1" });
-              setMessage("");
-              messageContainerRef.current?.scrollToIndex(data.length);
+      <Stack
+        direction="row"
+        spacing="24px"
+        p={3}
+        borderRadius="32px"
+        width="100%"
+        bgcolor={themeColors.brown[10]}
+        alignItems="center"
+      >
+        <Box component="label" flex={1} alignSelf="stretch" display="flex" alignItems="center" sx={{ cursor: "text" }}>
+          <ChatInput
+            maxRows={3}
+            placeholder="Type your message here"
+            value={message}
+            onChange={(event) => {
+              setMessage(event.target.value);
             }}
-          >
-            <ArrowCurveBottomLeftIcon width="32px" height="32px" />
-          </Button>
-        </Stack>
-      </Box>
+          />
+        </Box>
+        <Button
+          sx={{ bgcolor: themeColors.green[50], width: "64px", height: "64px", borderRadius: "32px", padding: 0 }}
+          disabled={!message}
+          onClick={async () => {
+            // if (!data.length) {
+            //   await createChatRoom({ userIds: [] });
+            // }
+            // setData((prevData) => {
+            //   return [...prevData, { content: message }];
+            // });
+            await sendChatMessage({ message: message, roomId: "1" });
+            setMessage("");
+            messageContainerRef.current?.scrollToIndex(data.length);
+          }}
+        >
+          <ArrowCurveBottomLeftIcon width="32px" height="32px" />
+        </Button>
+      </Stack>
     </>
   );
 };
